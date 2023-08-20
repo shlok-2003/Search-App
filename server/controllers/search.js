@@ -2,15 +2,10 @@ import events from "../models/search.js";
 
 export const getSearch = async(req, res) => {
     try {
-        const { key } = req.params
-
-        // Create a regular expression pattern for partial matching
-        const regexPattern = new RegExp(key, "i"); // "i" flag for case-insensitive matching
-
-        const search = await events.find({ title: regexPattern });
-
-        console.log(search);
-
+        const key = req.query.keyword;
+        // console.log(key);
+        
+        const search = await events.find({ title: { $regex: key, $options: "i" } });
         res.status(200).json(
             {
                 success: true,

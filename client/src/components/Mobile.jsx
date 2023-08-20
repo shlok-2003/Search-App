@@ -26,31 +26,31 @@ export default function Mobile() {
     }
     ,[]);
 
-    // const fetchResult = async(key) => {
-    //     console.log(key);
+    const fetchResult = async(key) => {
+        console.log(key);
 
-    //     const response = await axios.get(`http://localhost:5000/events/${key}`)
-    //                                 .then(res => res.data)
-    //                                 .catch(err => console.error(err));
-    //     console.log(response.data.data);
-    //     // if(response.data) {
-    //     //     setResult(response.data.data);
-    //     // }
-    // }
+        const response = await axios.get(`http://localhost:5000/events/search?keyword=${key}`).then(res => res.data).catch(err => console.error(err));
+        
+        console.log(response.data.data);
+        if(response.data) {
+            setResult(response.data.data);
+        }
+    }
 
     function handleChange(event) {
         const key = event.target.value;
 
-        setSearchText(event.target.value);
+        // setSearchText(event.target.value);
 
 
         if(key.length > 0) {
-            let filteredData = masterData.filter(
-                (item) =>
-                    item.title.toLowerCase().includes(searchText.toLowerCase())
-            );
-            setResult(filteredData);
-            // fetchResult(key);
+            // let filteredData = masterData.filter(
+            //     (item) =>
+            //         item.title.toLowerCase().includes(searchText.toLowerCase())
+            // );
+            // setResult(filteredData);
+
+            fetchResult(key);
         }
         else {
             setResult(masterData);
