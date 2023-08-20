@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+import mongoose  from "mongoose";
+import dotenv from "dotenv";
 
 // Load env variables
 dotenv.config();
@@ -19,4 +19,4 @@ const dbConnect = () => {
         })
 }
 
-module.exports = dbConnect;
+export default dbConnect;

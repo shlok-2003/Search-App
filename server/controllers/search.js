@@ -1,9 +1,9 @@
-const Search = require("../models/search");
+import events from "../models/search.js";
 
-exports.getSearch = async(req, res) => {
+export const getSearch = async(req, res) => {
     try {
         const { key } = req.params
-        const search = await Search.find({ title: key })
+        const search = await events.find({ title: key })
 
         res.status(200).json(
             {

@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const searchSchema = new mongoose.Schema(
+const events = new mongoose.Schema(
     {
         title: {
             type: String,
@@ -15,4 +15,4 @@ const searchSchema = new mongoose.Schema(
     }
 )
 
-module.exports = mongoose.model("Search", searchSchema);
+export default mongoose.model("events", events);
