@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function Result({ title, description }) {
@@ -12,36 +12,33 @@ function Result({ title, description }) {
 
 export default function Mobile() {
     const [search, setSearch] = useState("");
-    const [result, setResult] = useState([
-        {
-            title: "History",
-            description: "History is the study of the past. Events occurring before the invention of writing systems are considered prehistory. \"History\" is an umbrella term that relates to past events as well as the memory, discovery, collection, organization, presentation, and interpretation of information about these events. Historians place the past in context using historical sources such as written documents, oral accounts, ecological markers, and material objects including art and artifacts."
-        },
-        {
-            title: "History of the world",
-            description: "The history of the world, in common parlance, is the history of humanity (or human history), as determined from archaeology, anthropology, genetics, linguistics, and other disciplines; and, for periods since the invention of writing, from recorded history and from secondary sources and studies."
-        },
-        {
-            title: "History of the world",
-            description: "The history of the world, in common parlance, is the history of humanity (or human history), as determined from archaeology, anthropology, genetics, linguistics, and other disciplines; and, for periods since the invention of writing, from recorded history and from secondary sources and studies."
+    const [result, setResult] = useState([]);
+
+    useEffect ( () => {
+        const fetchAll = async() => {
+            const tempResult = await axios.get('http://localhost:5000/events/')
+            setResult(tempResult.data.data);
+            console.log(tempResult.data.data);
         }
-    ]);
+        fetchAll();
+    }
+    ,[]);
 
     const fetchResult = async(key) => {
-        const response = await axios.get(`https://127.0.0.1:5000/search/${key}`)
+        const response = await axios.get(`http://localhost:5000/events/${key}`)
                                     .then(res => res.data)
                                     .catch(err => console.error(err));
-
-        if(response) {
-            setResult(response);
-        }
+        console.log(response.data.data);
+        // if(response.data) {
+        //     setResult(response.data.data);
+        // }
     }
 
     function handleChange(event) {
         const key = event.target.value;
 
         setSearch(event.target.value);
-        if(key.length > 0) {
+        if(key.length > 2) {
             fetchResult(key);
         }
     }
