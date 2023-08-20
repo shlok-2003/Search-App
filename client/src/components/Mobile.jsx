@@ -11,39 +11,53 @@ function Result({ title, description }) {
 }
 
 export default function Mobile() {
-    const [search, setSearch] = useState("");
+    const [searchText, setSearchText] = useState("");
     const [result, setResult] = useState([]);
+    const [masterData, setMasterData] = useState([]);
 
     useEffect ( () => {
         const fetchAll = async() => {
             const tempResult = await axios.get('http://localhost:5000/events/')
             setResult(tempResult.data.data);
+            setMasterData(tempResult.data.data);
             console.log(tempResult.data.data);
         }
         fetchAll();
     }
     ,[]);
 
-    const fetchResult = async(key) => {
-        const response = await axios.get(`http://localhost:5000/events/${key}`)
-                                    .then(res => res.data)
-                                    .catch(err => console.error(err));
-        console.log(response.data.data);
-        // if(response.data) {
-        //     setResult(response.data.data);
-        // }
-    }
+    // const fetchResult = async(key) => {
+    //     console.log(key);
+
+    //     const response = await axios.get(`http://localhost:5000/events/${key}`)
+    //                                 .then(res => res.data)
+    //                                 .catch(err => console.error(err));
+    //     console.log(response.data.data);
+    //     // if(response.data) {
+    //     //     setResult(response.data.data);
+    //     // }
+    // }
 
     function handleChange(event) {
         const key = event.target.value;
 
-        setSearch(event.target.value);
-        if(key.length > 2) {
-            fetchResult(key);
+        setSearchText(event.target.value);
+
+
+        if(key.length > 0) {
+            let filteredData = masterData.filter(
+                (item) =>
+                    item.title.toLowerCase().includes(searchText.toLowerCase())
+            );
+            setResult(filteredData);
+            // fetchResult(key);
+        }
+        else {
+            setResult(masterData);
         }
     }
 
-    console.log(search);
+    console.log(searchText);
 
     return (
         <div className="relative bg-white grid place-items-center overflow-hidden h-[35rem] w-72 rounded-3xl">
@@ -55,7 +69,7 @@ export default function Mobile() {
             <div className="absolute h-6 w-1 rounded-r left-0 top-24 bg-black"></div>
 
             <div className="relative bg-gray-600 flex justify-center h-[31rem] w-64 rounded-3xl overflow-hidden">
-                <input type="text" value={search} placeholder="Search About History" onChange={handleChange} 
+                <input type="text" value={searchText} placeholder="Search About History" onChange={handleChange} 
                 className="font-semibold px-2 absolute w-5/6 h-10 bg-slate-300 top-4 rounded-3xl"/>
 
                 <div className="flex flex-col items-center mt-16 overflow-auto">
